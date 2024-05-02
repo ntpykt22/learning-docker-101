@@ -8,3 +8,15 @@ services:
     container_name: nginx-demo
     ports:
        - 7777:80
+# Postgres
+  database:
+    image: postgres-demo
+    build:
+      context: ./postgres
+      dockerfile: dockerfile
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
