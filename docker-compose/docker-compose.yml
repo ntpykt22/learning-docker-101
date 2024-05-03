@@ -1,14 +1,14 @@
 version: '3'
 services:
-  web: 
+  web:
     image: ntpykt22/demo:2.0
-    build: 
-      context: ./nginx 
+    build:
+      context: ./nginx
       dockerfile: dockerfile
     container_name: nginx-demo
     ports:
-       - 7777:80
-# Postgres
+      - 7777:80
+  # Postgres
   database:
     image: postgres-demo
     build:
@@ -19,7 +19,14 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-#Javascirpt
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  #Javascirpt
   backend:
     image: backend:1.0
     build:
@@ -33,6 +40,15 @@ services:
       DB_NAME: postgres
       DB_USER: postgres
       DB_PASSWORD: postgres
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    depends_on:
+      database:
+        condition: service_healthy
 
   frontend:
     image: frontend:1.0
@@ -42,4 +58,6 @@ services:
     container_name: frontend-demo
     ports:
       - 8888:80
-
+    depends_on:
+      backend:
+        condition: service_healthy
