@@ -34,3 +34,12 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
 
+  frontend:
+    image: frontend:1.0
+    build:
+      context: frontend
+      dockerfile: dockerfile
+    container_name: frontend-demo
+    ports:
+      - 8888:80
+
