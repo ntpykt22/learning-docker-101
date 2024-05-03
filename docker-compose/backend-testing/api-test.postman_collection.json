@@ -26,10 +26,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000",
+					"raw": "backend:3000",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"backend"
 					],
 					"port": "3000"
 				}

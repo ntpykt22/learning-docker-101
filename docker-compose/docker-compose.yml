@@ -61,3 +61,13 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+
+  backend_test:
+    image: demo-backend-testing_image:1.0
+    build:
+      context: ./backend-testing
+      dockerfile: dockerfile
+    volumes:
+      - ./backend-testing/test-report:/etc/newman/newman
+    depends_on:
+      - backend
