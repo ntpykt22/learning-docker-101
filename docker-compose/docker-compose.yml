@@ -71,3 +71,17 @@ services:
       - ./backend-testing/test-report:/etc/newman/newman
     depends_on:
       - backend
+
+  #Mountebank
+  mock_api:
+    image: mock-api:1.0
+    container_name: mock-api
+    build:
+      context: ./mountebank
+      dockerfile: Dockerfile
+    ports:
+      - 2525:2525
+      - 8090:8090
+    command: --configfile /imposters/imposters.ejs --allowInjection
+    volumes:
+      - ./mountebank/imposters:/imposters
