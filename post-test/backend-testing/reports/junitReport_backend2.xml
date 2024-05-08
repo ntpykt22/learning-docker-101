@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Backend2" tests="2" time="0.256">
+  <testsuite name="Get pet" id="c8bcc498-347a-42a4-816d-95420572defc" timestamp="2024-05-08T11:10:19.295Z" tests="5" failures="0" errors="0" time="0.209">
+    <testcase name="Response status code is 200" time="0.209" classname="Backend2"/>
+    <testcase name="Response has the required fields - id, name, and total" time="0.209" classname="Backend2"/>
+    <testcase name="Name is a non-empty string" time="0.209" classname="Backend2"/>
+    <testcase name="Total is a non-negative integer" time="0.209" classname="Backend2"/>
+    <testcase name="Content-Type header is application/json" time="0.209" classname="Backend2"/>
+  </testsuite>
+  <testsuite name="Get food" id="b35a292c-e09d-42ef-b938-7f2c7deb37f4" timestamp="2024-05-08T11:10:19.295Z" tests="5" failures="0" errors="0" time="0.047">
+    <testcase name="Response status code is 200" time="0.047" classname="Backend2"/>
+    <testcase name="Response has the required fields - id, name, and total" time="0.047" classname="Backend2"/>
+    <testcase name="Name is a non-empty string" time="0.047" classname="Backend2"/>
+    <testcase name="Total is a non-negative integer" time="0.047" classname="Backend2"/>
+    <testcase name="Content-Type header is application/json" time="0.047" classname="Backend2"/>
+  </testsuite>
+</testsuites>

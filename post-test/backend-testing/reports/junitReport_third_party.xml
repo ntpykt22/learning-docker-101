@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Third party" tests="1" time="0.000">
+  <testsuite name="3rd party" id="89f392db-4aab-47be-bbae-05b5958f329d" timestamp="2024-05-08T11:10:22.406Z" tests="2" failures="2" errors="1" time="0.000">
+    <system-err><![CDATA[Iteration: 0
+RequestError: Error: socket hang up
+    at Socket.socketOnEnd (node:_http_client:526:23)
+    at Socket.emit (node:events:532:35)
+    at endReadableNT (node:internal/streams/readable:1696:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+---
+]]></system-err>
+    <testcase name="Status code is 200" time="0.000" classname="ThirdParty">
+      <failure type="AssertionFailure" message="expected PostmanResponse{ …(5) } to have property 'code'">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: adc26602-8267-44cd-b2b1-5ff58ff00580.]]>
+        <![CDATA[Collection name: Third party.]]>
+        <![CDATA[Request name: 3rd party.]]>
+        <![CDATA[Test description: Status code is 200.]]>
+        <![CDATA[Error message: expected PostmanResponse{ …(5) } to have property 'code'.]]>
+        <![CDATA[Stacktrace: AssertionError: expected PostmanResponse{ …(5) } to have property 'code'
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="Schema is valid" time="0.000" classname="ThirdParty">
+      <failure type="AssertionFailure" message="&quot;undefined&quot; is not valid JSON">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: adc26602-8267-44cd-b2b1-5ff58ff00580.]]>
+        <![CDATA[Collection name: Third party.]]>
+        <![CDATA[Request name: 3rd party.]]>
+        <![CDATA[Test description: Schema is valid.]]>
+        <![CDATA[Error message: "undefined" is not valid JSON.]]>
+        <![CDATA[Stacktrace: JSONError: "undefined" is not valid JSON
+   at Object.eval sandbox-script.js:2:1).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+</testsuites>

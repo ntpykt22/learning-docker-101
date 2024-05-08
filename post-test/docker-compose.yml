@@ -1,0 +1,124 @@
+version: '3'
+services:
+  database01:
+    image: postgres-post-test
+    build:
+      context: ./database1
+      dockerfile: Dockerfile
+    container_name: postgres1
+    environment:
+      POSTGRES_USER: postgres1
+      POSTGRES_PASSWORD: postgres1
+      POSTGRES_DB: postgres1
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "postgres1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  database02:
+    image: postgres-post-test2
+    build:
+      context: ./database2
+      dockerfile: Dockerfile
+    container_name: postgres3
+    environment:
+      POSTGRES_USER: postgres3
+      POSTGRES_PASSWORD: postgres3
+      POSTGRES_DB: postgres3
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "postgres3" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  backend1:
+    image: backend1:2.0
+    build:
+      context: ./backend1
+      dockerfile: Dockerfile
+    container_name: backend1-post-test
+    ports:
+      - 3000:3000
+    environment:
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+      #database01
+      DB1_HOST: database01
+      DB1_NAME: postgres1
+      DB1_USER: postgres1
+      DB1_PASSWORD: postgres1
+      #database02
+      DB2_HOST: database02
+      DB2_NAME: postgres3
+      DB2_USER: postgres3
+      DB2_PASSWORD: postgres3
+      #third-party
+      THIRD_PARTY_SERVICE: https://your-third-party-service.com/endpoint
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    depends_on:
+      database01:
+        condition: service_healthy
+      database02:
+        condition: service_healthy
+
+  backend2:
+    image: backend2:1.0
+    build:
+      context: ./backend2
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    environment:
+      #database01
+      DB3_HOST: database01
+      DB3_NAME: postgres1
+      DB3_USER: postgres1
+      DB3_PASSWORD: postgres1
+      #database02
+      DB4_HOST: database02
+      DB4_NAME: postgres3
+      DB4_USER: postgres3
+      DB4_PASSWORD: postgres3
+    container_name: backend2
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3001 || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    depends_on:
+      database01:
+        condition: service_healthy
+      database02:
+        condition: service_healthy
+
+  backend_test:
+    image: post-test-backend-testing_image:2.0
+    build:
+      context: ./backend-testing
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend-testing/reports:/etc/newman/reports
+    depends_on:
+      - backend1
+      - backend2
+
+  mock_api:
+    image: mock-api:0.2
+    container_name: mock-api-post-test
+    build:
+      context: ./mountebank
+      dockerfile: Dockerfile
+    ports:
+      - 2525:2525
+      - 8090:8090
+    command: --configfile /imposters/imposters.ejs --allowInjection
+    volumes:
+      - ./mountebank/imposters:/imposters
